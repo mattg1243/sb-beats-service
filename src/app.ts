@@ -2,7 +2,6 @@ import express from 'express';
 import dotenv from 'dotenv';
 import indexRouter from './routes';
 import cors from 'cors';
-import proxy from 'express-http-proxy';
 
 dotenv.config();
 
@@ -16,10 +15,8 @@ const app = express();
 app.use(cors());
 // routes
 app.use(indexRouter);
-// microservice proxy routes
-app.use('/user', proxy(USER_HOST));
-app.use('/auth', proxy(AUTH_HOST));
+
 // start server
 app.listen(PORT, () => {
-  console.log(`Gateway server listening on port ${PORT}...`);
+  console.log(`Service listening on port ${PORT}...`);
 });
