@@ -1,26 +1,55 @@
-export type GenreTags =
-  | 'Pop'
-  | 'Rock'
-  | 'Hip-Hop & Rap'
-  | 'Country'
-  | 'R&B'
-  | 'Folk'
-  | 'Jazz'
-  | 'Heavy Metail'
-  | 'EDM'
-  | 'Soul'
-  | 'Funk'
-  | 'Reggae'
-  | 'Disco'
-  | 'Punk Rock'
-  | 'Classical'
-  | 'House'
-  | 'Techno'
-  | 'Indie'
-  | 'Grunge'
-  | 'Ambient'
-  | 'Gospel'
-  | 'Latin'
-  | 'Grime'
-  | 'Trap'
-  | 'Psychedelic Rock';
+export enum GenreTags {
+  Pop = 'Pop',
+  Rock = 'Rock',
+  HipHop = 'Hip-Hop & Rap',
+  Country = 'Country',
+  RnB = 'R&B',
+  Folk = 'Folk',
+  Jazz = 'Jazz',
+  HeavyMetal = 'Heavy Metal',
+  EDM = 'EDM',
+  Sould = 'Sould',
+  Funk = 'Funk',
+  Reggae = 'Reggae',
+  Disco = 'Disco',
+  PunkRock = 'Punk Rock',
+  Classical = 'Classical',
+  House = 'House',
+  Techno = 'Techno',
+  Indie = 'Indie',
+  Grunge = 'Grunge',
+  Ambient = 'Ambient',
+  Gospel = 'Gospel',
+  Latin = 'Latin',
+  Grime = 'Grime',
+  Trap = 'Trap',
+  PsycRock = 'Psychedelic Rock',
+}
+
+export const GENRE_TAGS = [
+  'Pop',
+  'Rock',
+  'Hip-Hop & Rap',
+  'Country',
+  'R&B',
+  'Folk',
+  'Jazz',
+  'Heavy Metal',
+  'EDM',
+  'Soul',
+  'Funk',
+  'Reggae',
+  'Disco',
+  'Punk Rock',
+  'Classical',
+  'House',
+  'Techno',
+  'Indie',
+  'Grunge',
+  'Ambient',
+  'Gospel',
+  'Latin',
+  'Grime',
+  'Trap',
+  'Psychedelic Rock',
+] as const;

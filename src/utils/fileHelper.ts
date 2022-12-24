@@ -10,8 +10,6 @@ export const determineFileType = (file: Express.Multer.File): string => {
   // take the extension from the file
   const finalPeriod = fileName.lastIndexOf('.') + 1;
   const fileExt = fileName.slice(finalPeriod);
-  console.log(fileName);
-  console.log('---  file extension: ' + fileExt);
   if (audioTypes.includes(fileExt)) {
     bucketLocationPrefix = 'beats/';
   } else if (imgTypes.includes(fileExt)) {
@@ -19,6 +17,5 @@ export const determineFileType = (file: Express.Multer.File): string => {
   } else {
     throw new Error('Invalid file type');
   }
-
   return bucketLocationPrefix;
 };
