@@ -1,17 +1,22 @@
-import { Entity, Column, OneToOne, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, Column } from 'typeorm';
 import Model from './Model.entity';
-import { GenreTags } from '../../utils/genreTags';
 
 @Entity('beats')
 export default class Beat extends Model {
   @Column()
-  name: string;
-
+  title: string;
+  // S3 bucket key
   @Column({ nullable: true })
-  artwork: string;
+  artworkKey: string;
+  // S3 bucket key
+  @Column()
+  audioKey: string;
   // id of artist in User table
   @Column()
-  artist: string;
+  artistID: string;
+  // naemof artist in User table
+  @Column()
+  artistName: string;
 
   @Column({ nullable: true })
   description: string;
@@ -19,17 +24,15 @@ export default class Beat extends Model {
   @Column()
   tempo: number;
 
-  @Column({ nullable: true, array: true })
-  genreTags: GenreTags;
-
-  @Column({ nullable: true, array: true })
-  otherTags: string;
-
   @Column()
-  clipPath: string;
+  key: string;
+  // TODO: makes this only accept valid genre tags
+  // tag fields are formatted as comma seperated values
+  @Column({ type: 'simple-array' })
+  genreTags: string[];
 
-  @Column()
-  wavPath: string;
+  @Column({ type: "simple-array", nullable: true })
+  otherTags: string[];
 
   @Column({ default: false })
   licensed: boolean;

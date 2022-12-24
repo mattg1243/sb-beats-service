@@ -1,11 +1,15 @@
 import Beat from '../models/Beat.entity';
 import { AppDataSource } from '../dataSource';
-import { UploadBeatInput } from '../schemas/Beat.schema';
+import { CreateBeatInput } from '../schemas/Beat.schema';
 
 const beatRepository = AppDataSource.getRepository(Beat);
 
-
-export const createBeat = async (beat: UploadBeatInput) => {};
+export const createBeat = async (newBeat: CreateBeatInput) => {
+  return (await AppDataSource.manager.save(AppDataSource.manager.create(Beat, newBeat))) as Beat;
+};
 // gets entire row from table by ID
-export const getBeatInfo = async (beatId: string) => {};
+export const getBeat = async (beatId: string) => {};
 
+export const getAllBeats = async () => {
+  return await AppDataSource.manager.find(Beat);
+};
