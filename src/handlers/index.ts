@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import fs from 'fs';
 import { uploadFileToS3 } from '../bucket/upload';
-import { createBeat, getAllBeats } from '../database/services/Beat.services';
+import { createBeat, getAllBeats, getAllBeatsByUser } from '../database/services/Beat.services';
 import { verifyJwt } from '../utils/jwt';
 import { UploadBeatInput } from '../database/schemas/Beat.schema';
 
@@ -80,13 +80,24 @@ export const uploadBeatHandler = async (req: Request<{}, {}, UploadBeatInput>, r
     console.log('no file detected');
   }
 };
-
-export const getAllBeatsHandler = async (req: Request, res: Response) => {
-  try {
-    const beats = await getAllBeats();
-    res.status(200).json(beats);
-  } catch (err) {
-    console.error(err);
-    return res.status(503).json({ status: 'fail', message: 'error occured getting beats from database' });
+// TODO: refactor this to make it more dry
+export const getBeatsHandler = async (req: Request, res: Response) => {
+  const userId = req.query.userId as string;
+  if (!userId) {
+    try {
+      const beats = await getAllBeats();
+      return res.status(200).json(beats);
+    } catch (err) {
+      console.error(err);
+      return res.status(503).json({ status: 'fail', message: 'error occured getting beats from database' });
+    }
+  } else {
+    try {
+      const beats = await getAllBeatsByUser(userId);
+      return res.status(200).json(beats);
+    } catch (err) {
+      console.error(err);
+      return res.status(503).json({ status: 'fail', message: 'error occured getting beats from database' });
+    }
   }
 };
