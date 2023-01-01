@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { indexHandler } from '../handlers';
-import { uploadBeatHandler, getAllBeatsHandler } from '../handlers/index';
+import { uploadBeatHandler, getBeatsHandler } from '../handlers/index';
 import multer from 'multer';
 import path from 'path';
 
@@ -20,6 +20,6 @@ router.post(
   uploadBeatHandler
 );
 
-router.get('/beats', getAllBeatsHandler);
+router.get('/beats', getBeatsHandler);
 
 export default router;
