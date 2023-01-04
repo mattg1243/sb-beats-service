@@ -1,7 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import fs from 'fs';
 import { uploadFileToS3 } from '../bucket/upload';
-import { createBeat, getAllBeats, getAllBeatsByUser } from '../database/services/Beat.services';
+import {
+  createBeat,
+  getAllBeats,
+  getAllBeatsByUser,
+  updateBeat,
+  beatRepository,
+} from '../database/services/Beat.services';
 import { verifyJwt } from '../utils/jwt';
 import { UploadBeatInput } from '../database/schemas/Beat.schema';
 
@@ -99,5 +105,42 @@ export const getBeatsHandler = async (req: Request, res: Response) => {
       console.error(err);
       return res.status(503).json({ status: 'fail', message: 'error occured getting beats from database' });
     }
+  }
+};
+
+export const updateBeatHandler = async (req: Request, res: Response) => {
+  // TODO: implement updating artwork
+  const beat = req.body;
+  console.log('beat: ', beat)
+  try {
+    const upatedBeat = await updateBeat(beat._id, beat);
+    return res.status(200).json({ message: 'Beat successfully updated.' });
+  } catch (err) {
+    return res.status(500).json({ message: 'There was an error updating your beat.' });
+  }
+};
+
+export const updateArtistNameHandler = async (req: Request, res: Response) => {
+  const userId = req.params.userId;
+  const { newArtistName } = req.body.newArtistName;
+  try {
+    const updatedBeatsResponse = await beatRepository.update({ artistID: userId }, { artistName: newArtistName });
+    console.log('beats update:\n', updatedBeatsResponse);
+    return res.status(200).json({ message: 'Artist name update successfully in the beats table.' });
+  } catch (err) {
+    console.error(err);
+    return res.status(503).json({ message: 'There was a problem updating your artist name for your beats.' });
+  }
+};
+
+export const deleteBeatHandler = async (req: Request, res: Response) => {
+  const beatId = req.params.id;
+  try {
+    const deleteBeatResponse = await beatRepository.delete({ _id: beatId });
+    console.log(deleteBeatResponse);
+    return res.status(200).json({ message: 'Beat deleted successfully.' });
+  } catch (err) {
+    console.error(err);
+    return res.status(503).json({ message: 'Error deleting beat.' });
   }
 };
