@@ -1,8 +1,15 @@
 import { Router } from 'express';
 import { indexHandler } from '../handlers';
-import { uploadBeatHandler, getBeatsHandler } from '../handlers/index';
+import {
+  uploadBeatHandler,
+  getBeatsHandler,
+  updateBeatHandler,
+  deleteBeatHandler,
+  updateArtistNameHandler,
+} from '../handlers/index';
 import multer from 'multer';
 import path from 'path';
+import { verifyBeatOwner } from '../middleware/verifyBeatOwner';
 
 const router = Router();
 const upload = multer({
@@ -10,7 +17,7 @@ const upload = multer({
 });
 
 router.get('/', indexHandler);
-
+router.get('/beats', getBeatsHandler);
 router.post(
   '/upload',
   upload.fields([
@@ -19,7 +26,8 @@ router.post(
   ]),
   uploadBeatHandler
 );
-
-router.get('/beats', getBeatsHandler);
+router.post('/update', verifyBeatOwner, updateBeatHandler);
+router.post('/update-artist-name/:userId', verifyBeatOwner, updateArtistNameHandler);
+router.delete('/:id', verifyBeatOwner, deleteBeatHandler);
 
 export default router;
