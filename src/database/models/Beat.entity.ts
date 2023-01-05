@@ -13,7 +13,7 @@ export default class Beat extends Model {
   audioKey: string;
   // id of artist in User table
   @Column()
-  artistID: string;
+  artistId: string;
   // naemof artist in User table
   @Column()
   artistName: string;

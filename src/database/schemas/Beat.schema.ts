@@ -28,7 +28,7 @@ export const createBeatSchema = object({
     // TODO: makes this check for image file
     artworkKey: string().optional(),
     audioKey: string(),
-    artistID: string(),
+    artistId: string(),
     artistName: string(),
     description: string().max(128).optional(),
     // these tag fields will be comma seperated values
