@@ -2,6 +2,9 @@ import S3 from 'aws-sdk/clients/s3';
 import fs from 'fs';
 import { determineFileType } from '../utils/fileHelper';
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 const bucketName = process.env.S3_BUCKET_NAME;
 const region = process.env.S3_BUCKET_REGION;
 const accessKeyId = process.env.S3_ACCESS_KEY;
