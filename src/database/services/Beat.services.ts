@@ -13,11 +13,11 @@ export const getBeat = async (beatId: string) => {
 };
 
 export const getAllBeats = async () => {
-  return await AppDataSource.manager.find(Beat);
+  return await AppDataSource.manager.find(Beat, { order: { created_at: 'ASC' } });
 };
 
 export const getAllBeatsByUser = async (userId: string) => {
-  return await beatRepository.findBy({ artistID: userId });
+  return await beatRepository.findBy({ artistId: userId });
 };
 
 export const updateBeat = async (beatId: string, updatedFields: {}) => {

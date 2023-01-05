@@ -17,7 +17,7 @@ export const AppDataSource = new DataSource({
   password: DB_PASSWORD,
   database: 'sweatshop_calabasas',
   synchronize: true,
-  logging: true,
+  logging: false,
   entities: [Beat],
   subscribers: [],
   migrations: [],
