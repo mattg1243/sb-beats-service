@@ -17,7 +17,11 @@ export const verifyBeatOwner = async (req: Request, res: Response, next: NextFun
       return res.status(404).json({ message: 'Beat not found' });
     }
     // handle malicious manipulation of someone elses data
-    if (beat.artistID !== userInfo.user.id) {
+    if (beat.artistId !== userInfo.user.id) {
+      console.log('beat.artistId !== userInfo.user.id');
+      console.log('beat.artistId: ', beat.artistId);
+      console.log('userInfo.user.id: ', userInfo.user.id);
+      console.log('beat: ', beat);
       return res.status(401).json({ message: 'You do not own this beat.' });
     }
     // the beat does belong to the user who made the request
