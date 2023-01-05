@@ -41,6 +41,9 @@ export const uploadBeatHandler = async (req: Request<{}, {}, UploadBeatInput>, r
       let artworkKey: string | undefined = undefined;
       if (artwork) {
         const artworkUploadResponse = await uploadFileToS3(artwork);
+        if (!artworkUploadResponse) {
+          return res.status(500).json('error uploading artwork file to S3');
+        }
         artworkKey = artworkUploadResponse?.Key;
       } else {
         console.log('error uploading artwork file to S3');
@@ -61,7 +64,7 @@ export const uploadBeatHandler = async (req: Request<{}, {}, UploadBeatInput>, r
       const newBeat = await createBeat({
         title: title,
         description: description,
-        artistID: userInfo.id,
+        artistId: userInfo.id,
         artistName: userInfo.artistName,
         audioKey: audioKey,
         artworkKey: artworkKey,
@@ -111,7 +114,7 @@ export const getBeatsHandler = async (req: Request, res: Response) => {
 export const updateBeatHandler = async (req: Request, res: Response) => {
   // TODO: implement updating artwork
   const beat = req.body;
-  console.log('beat: ', beat)
+  console.log('beat: ', beat);
   try {
     const upatedBeat = await updateBeat(beat._id, beat);
     return res.status(200).json({ message: 'Beat successfully updated.' });
@@ -124,7 +127,7 @@ export const updateArtistNameHandler = async (req: Request, res: Response) => {
   const userId = req.params.userId;
   const { newArtistName } = req.body.newArtistName;
   try {
-    const updatedBeatsResponse = await beatRepository.update({ artistID: userId }, { artistName: newArtistName });
+    const updatedBeatsResponse = await beatRepository.update({ artistId: userId }, { artistName: newArtistName });
     console.log('beats update:\n', updatedBeatsResponse);
     return res.status(200).json({ message: 'Artist name update successfully in the beats table.' });
   } catch (err) {
@@ -134,6 +137,7 @@ export const updateArtistNameHandler = async (req: Request, res: Response) => {
 };
 
 export const deleteBeatHandler = async (req: Request, res: Response) => {
+  // THIS NEEDS TO DELETE THE BEAT FROM THE S3 BUCKET ALSO
   const beatId = req.params.id;
   try {
     const deleteBeatResponse = await beatRepository.delete({ _id: beatId });

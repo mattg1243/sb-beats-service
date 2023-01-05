@@ -26,7 +26,7 @@ router.post(
   ]),
   uploadBeatHandler
 );
-router.post('/update', verifyBeatOwner, updateBeatHandler);
+router.post('/update/:id', verifyBeatOwner, updateBeatHandler);
 router.post('/update-artist-name/:userId', verifyBeatOwner, updateArtistNameHandler);
 router.delete('/:id', verifyBeatOwner, deleteBeatHandler);
 
