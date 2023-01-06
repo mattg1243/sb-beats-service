@@ -27,7 +27,9 @@ router.post(
   uploadBeatHandler
 );
 router.post('/update/:id', verifyBeatOwner, updateBeatHandler);
-router.post('/update-artist-name/:userId', verifyBeatOwner, updateArtistNameHandler);
 router.delete('/:id', verifyBeatOwner, deleteBeatHandler);
+
+// private routes called by other internal services only, will be replave by gRPC
+router.post('/update-artist-name/:userId', updateArtistNameHandler);
 
 export default router;
