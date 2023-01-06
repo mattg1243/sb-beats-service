@@ -125,9 +125,9 @@ export const updateBeatHandler = async (req: Request, res: Response) => {
 
 export const updateArtistNameHandler = async (req: Request, res: Response) => {
   const userId = req.params.userId;
-  const { newArtistName } = req.body.newArtistName;
+  const artistName = req.body.artistName;
   try {
-    const updatedBeatsResponse = await beatRepository.update({ artistId: userId }, { artistName: newArtistName });
+    const updatedBeatsResponse = await beatRepository.update({ artistId: userId }, { artistName: artistName });
     console.log('beats update:\n', updatedBeatsResponse);
     return res.status(200).json({ message: 'Artist name update successfully in the beats table.' });
   } catch (err) {
