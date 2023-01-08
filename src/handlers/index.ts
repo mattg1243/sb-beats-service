@@ -22,6 +22,11 @@ export const uploadBeatHandler = async (req: Request<{}, {}, UploadBeatInput>, r
 
   const { title, description, genreTags, otherTags, tempo, key } = req.body;
   const token = req.cookies['sb-access-token'];
+  const user = req.user;
+  if (!user) {
+    console.log('Middleware failed to attach user.');
+    return res.status(500).json('Middleware failed to attach user.');
+  }
 
   if (req.files) {
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };
@@ -53,19 +58,12 @@ export const uploadBeatHandler = async (req: Request<{}, {}, UploadBeatInput>, r
       console.timeEnd(uploadTimer);
       console.log('file(s) uploaded: ');
       // get the necessary user info
-      const userFromCookie = verifyJwt(token);
-      if (!userFromCookie) {
-        console.log('error decoding user data from token');
-        return res.status(500).json('error decoding user data from token');
-      }
-      const userInfo = userFromCookie.user;
-      console.log(userFromCookie);
       // save the beat data to the sql table
       const newBeat = await createBeat({
         title: title,
         description: description,
-        artistId: userInfo.id,
-        artistName: userInfo.artistName,
+        artistId: user.id,
+        artistName: user.artistName,
         audioKey: audioKey,
         artworkKey: artworkKey,
         genreTags: JSON.parse(genreTags),

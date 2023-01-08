@@ -10,6 +10,7 @@ import {
 import multer from 'multer';
 import path from 'path';
 import { verifyBeatOwner } from '../middleware/verifyBeatOwner';
+import { verifyUser } from '../middleware/verifyUser';
 
 const router = Router();
 const upload = multer({
@@ -23,11 +24,11 @@ router.post(
   upload.fields([
     { name: 'audio', maxCount: 1 },
     { name: 'artwork', maxCount: 1 },
-  ]),
+  ]), verifyUser,
   uploadBeatHandler
 );
-router.post('/update/:id', verifyBeatOwner, updateBeatHandler);
-router.delete('/:id', verifyBeatOwner, deleteBeatHandler);
+router.post('/update/:id', verifyUser, verifyBeatOwner, updateBeatHandler);
+router.delete('/:id', verifyUser, verifyBeatOwner, deleteBeatHandler);
 
 // private routes called by other internal services only, will be replave by gRPC
 router.post('/update-artist-name/:userId', updateArtistNameHandler);
