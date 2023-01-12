@@ -31,11 +31,11 @@ export const uploadBeatHandler = async (req: Request<{}, {}, UploadBeatInput>, r
   if (req.files) {
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };
     const beat = files['audio'][0];
-    const artwork = files['artwork'][0];
+    const artwork = files['artwork'] ? files['artwork'][0] : null;
 
     try {
       // upload the files to the S3 bucket and save the Keys
-      const beatUploadResponse = await uploadFileToS3(beat);
+      const beatUploadResponse = await uploadFileToS3(beat, res);
       if (!beatUploadResponse) {
         console.log('error uploading audio file to S3');
         return res.status(500).json('error uploading audio file to S3');
@@ -50,9 +50,6 @@ export const uploadBeatHandler = async (req: Request<{}, {}, UploadBeatInput>, r
           return res.status(500).json('error uploading artwork file to S3');
         }
         artworkKey = artworkUploadResponse?.Key;
-      } else {
-        console.log('error uploading artwork file to S3');
-        return res.status(500).json('error uploading artwork file to S3');
       }
       // now need to create an SQL row and store the filepath there
       console.timeEnd(uploadTimer);
